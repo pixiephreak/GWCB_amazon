@@ -39,7 +39,7 @@ var products = [{
   price: 24.29,
   stock_count: 7
 }, {
-  product_name: 'stapler rapid model 2730',
+  product_name: 'staples rapid model 2730',
   department_name: 'tools',
   price: 12.59,
   stock_count: 3

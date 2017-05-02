@@ -1,76 +1,31 @@
 var mysql = require('mysql');
+var inquirer = require('inquirer');
+var products = require('./products');
 var config = require('./config');
-var config = require('./products');
-var credentials = {
-  host: 'localhost',
-  port: 3306,
-  user: 'root',
-  password: '',
-  database: 'amazon'
-};
-
-var connection = mysql.createConnection(credentials);
+var connection = mysql.createConnection(config);
 
 connection.connect(function(err){
   if (err) throw err;
   console.log(`connected at ${connection.threadId}`);
 });
 
+//TO-DO: ASSURE THAT SCRIPT ONLY RUNS IF IT NEVER HAS BEFORE...?
 //populate db
-// console.log(products)
-
+// products.forEach(function(product){
+//   connection.query('INSERT INTO products SET ?', product);
+// });
 //print all songs in db to the terminal
 
+connection.query('SELECT * from products', function(err, res){
+  if(err) throw err;
+  console.log(`INVENTORY OVERVIEW:`);
+  console.log(`*********************************************`);
 
-
-var products = [{
-  product_name: 'posterboard white',
-  department_name: 'stationary',
-  price: 2.79,
-  stock_count: 67
-}, {
-  product_name: 'permanent markers thin tip black',
-  department_name: 'stationary',
-  price: 1.79,
-  stock_count: 104
-}, {
-  product_name: 'packing tape clear 400ft',
-  department_name: 'stationary',
-  price: 4.29,
-  stock_count: 13
-}, {
-  product_name: 'glitter 3 pack assorted',
-  department_name: 'stationary',
-  price: 2.39,
-  stock_count: 7
-}, {
-  product_name: 'glue white school',
-  department_name: 'stationary',
-  price: 1.29,
-  stock_count: 133
-}, {
-  product_name: 'twine 400 ft natural',
-  department_name: 'stationary',
-  price: 5.19,
-  stock_count: 17
-}, {
-  product_name: 'permanent markers wide tip black',
-  department_name: 'stationary',
-  price: 4.29,
-  stock_count: 5
-}, {
-  product_name: 'stapler rapid model 2730',
-  department_name: 'tools',
-  price: 24.29,
-  stock_count: 7
-}, {
-  product_name: 'stapler rapid model 2730',
-  department_name: 'tools',
-  price: 12.59,
-  stock_count: 3
-}, {
-  product_name: 'wooden stakes 4ft',
-  department_name: 'lumber',
-  price: 0.59,
-  stock_count: 27
-}];
+  res.forEach(function(item){
+    console.log(`product: ${item.product_name}`);
+    console.log(`department: ${item.department_name}`);
+    console.log(`price: ${item.price}`);
+    console.log(`inventory count: ${item.stock_count}`);
+    console.log(`*********************************************`);
+  });
+})
